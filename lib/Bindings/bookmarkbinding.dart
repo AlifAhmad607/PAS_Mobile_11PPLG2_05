@@ -1,11 +1,9 @@
 import 'package:get/get.dart';
 import 'package:pas_mobile/Controllers/bookmarkcontroller.dart';
-import '../Controllers/TvlistController.dart';
 
-class TvlistBinding extends Bindings {
+class BookmarkBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<TvlistController>(() => TvlistController());
     Get.lazyPut<BookmarkController>(() => BookmarkController());
   }
 }

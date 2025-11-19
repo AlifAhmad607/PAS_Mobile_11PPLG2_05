@@ -13,7 +13,6 @@ class SplashscreenController extends GetxController {
     await Future.delayed(Duration(seconds: 3));
     final prefs = await SharedPreferences.getInstance();
 
-    // Cek token, bukan username
     if (prefs.getString("token") != null) {
       Get.offAllNamed(Approutes.home);
     } else {

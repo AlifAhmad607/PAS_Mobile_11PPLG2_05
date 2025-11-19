@@ -1,73 +1,37 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:get_storage/get_storage.dart';
 import 'package:pas_mobile/Models/register.dart';
-import 'package:pas_mobile/network/apiservice.dart';
 
 class RegisterController extends GetxController {
   var isLoading = false.obs;
+  var message = ''.obs;
 
-  final fullNameC = TextEditingController();
-  final nameC = TextEditingController();   
-  final emailC = TextEditingController();
-  final passC = TextEditingController();
-  final confirmPassC = TextEditingController();
-
-  Future<void> register() async {
-    final full = fullNameC.text.trim();
-    final username = nameC.text.trim();
-    final email = emailC.text.trim();
-    final pass = passC.text;
-    final confirm = confirmPassC.text;
-
-    
-    debugPrint("FULL: $full | USERNAME: $username | EMAIL: $email");
-
-    if (full.isEmpty || username.isEmpty || email.isEmpty || pass.isEmpty || confirm.isEmpty) {
-      Get.snackbar("Error", "Semua field harus diisi");
-      return;
-    }
-
-    if (pass != confirm) {
-      Get.snackbar("Error", "Password tidak sama");
-      return;
-    }
-
+  Future<void> register(String username, String password, String email) async {
     try {
       isLoading.value = true;
 
-      Registermodel res = await ApiService.register(
-        full,
-        username,  
-        email,
-        pass,
-      );
+      var url = Uri.parse("https://mediadwi.com/api/latihan/register-user");
+      var response = await http.post(url, body: {
+        'username': username,
+        'password': password,
+        'email': email,
+      });
 
-      Get.snackbar(
-        res.status ? "Success" : "Failed",
-        res.message,
-        backgroundColor: res.status ? Colors.green : Colors.red,
-        colorText: Colors.white,
-      );
+      var data = jsonDecode(response.body);
+      Registermodel model = Registermodel.fromJson(data);
 
-      if (res.status) {
-        Future.delayed(const Duration(seconds: 1), () {
-          Get.offAllNamed('/login');
-        });
+      if (response.statusCode == 200 && model.status) {
+        Get.snackbar("Success", model.message);
+        Get.back(); // kembali ke halaman login
+      } else {
+        Get.snackbar("Error", model.message);
       }
     } catch (e) {
-      Get.snackbar("Error", e.toString());
+      Get.snackbar("Error", "Terjadi kesalahan: $e");
     } finally {
       isLoading.value = false;
     }
-  }
-
-  @override
-  void onClose() {
-    fullNameC.dispose();
-    nameC.dispose();
-    emailC.dispose();
-    passC.dispose();
-    confirmPassC.dispose();
-    super.onClose();
   }
 }

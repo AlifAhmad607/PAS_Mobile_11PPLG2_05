@@ -1,54 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pas_mobile/Controllers/profileController.dart';
+import 'package:pas_mobile/Controllers/LoginController.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
-  final Profilecontroller controller = Get.put(Profilecontroller());
+
+  // ambil controller login
+  final Logincontroller loginC = Get.find<Logincontroller>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profil"),
+        title: const Text("Profile"),
         centerTitle: true,
       ),
-      body: Center( 
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, 
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-
-              Obx(() => CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(controller.profilePictUrl.value),
-              )),
-              const SizedBox(height: 20),
-
-              Obx(() => Text(
-                controller.name.value,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              )),
-              const SizedBox(height: 10),
-
-              Obx(() => Text(
-                controller.email.value,
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
-              )),
-              const SizedBox(height: 8),
-
-              Obx(() => Text(
-                controller.address.value,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
-              )),
-            ],
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            Obx(() => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Username: ${loginC.userName.value}",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      "Email: ${loginC.userEmail.value}",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ],
+                )),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: () {
+                loginC.signOut(); // logout
+              },
+              child: const Text("Logout"),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-  

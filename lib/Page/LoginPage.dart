@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pas_mobile/Controllers/LoginController.dart';
+import 'package:pas_mobile/Page/RegisterPage.dart';
+import 'package:pas_mobile/Routes/Approutes.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -38,7 +40,10 @@ class LoginPage extends StatelessWidget {
                     },
                     child: const Text("Login API"),
                   )),
+
             const SizedBox(height: 25),
+
+            
             Row(
               children: const [
                 Expanded(child: Divider()),
@@ -49,7 +54,16 @@ class LoginPage extends StatelessWidget {
                 Expanded(child: Divider()),
               ],
             ),
+
             const SizedBox(height: 25),
+
+           TextButton(
+              onPressed: () {
+                Get.toNamed(Approutes.register);
+              },
+              child: const Text("Register here"),
+            ),
+
           ],
         ),
       ),

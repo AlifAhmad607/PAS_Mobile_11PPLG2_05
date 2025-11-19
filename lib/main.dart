@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:pas_mobile/Routes/AppPage.dart';
-import 'package:pas_mobile/Routes/AppRoutes.dart';
+import 'package:pas_mobile/Routes/Approutes.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   runApp(const MainApp());
 }
 
@@ -15,8 +18,8 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'BottomNav GetX',
       debugShowCheckedModeBanner: false,
-      initialRoute: Approutes.login, 
-      getPages: AppPage.pages,     
+      initialRoute: Approutes.login,
+      getPages: AppPage.pages,
     );
   }
 }
